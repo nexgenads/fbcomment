@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Comment Screenshot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1877f2;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #screenshot-preview {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #screenshot-preview img {
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Facebook Comment Screenshot Tool</h2>
+    <input type="text" id="fbUrl" placeholder="Paste Facebook comment URL here...">
+    <button onclick="captureScreenshot()">Generate Screenshot</button>
+    <div id="screenshot-preview"></div>
+  </div>
+
+  <script>
+    async function captureScreenshot() {
+      const fbUrl = document.getElementById('fbUrl').value.trim();
+      if (!fbUrl.startsWith('http')) {
+        alert('Please enter a valid Facebook comment link.');
+        return;
+      }
+      const encodedUrl = encodeURIComponent(fbUrl);
+      const apiKey = 'T3BEZ0J-HRCM506-H5BY1KB-2P2HYT6'; // Replace this with your ScreenshotAPI.net API key
+      const apiUrl = `https://api.screenshotapi.net/screenshot?token=${apiKey}&url=${encodedUrl}&output=image&file_type=png&full_page=false&viewport=1280x800`;
+
+      const img = document.createElement('img');
+      img.src = apiUrl;
+      img.alt = 'Screenshot';
+
+      const previewDiv = document.getElementById('screenshot-preview');
+      previewDiv.innerHTML = '';
+      previewDiv.appendChild(img);
+
+      // Create download link
+      const link = document.createElement('a');
+      link.href = apiUrl;
+      link.download = 'facebook-comment.png';
+      link.textContent = 'Download Screenshot';
+      link.style.display = 'block';
+      link.style.marginTop = '10px';
+      previewDiv.appendChild(link);
+    }
+  </script>
+</body>
+</html>
