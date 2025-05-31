@@ -50,6 +50,7 @@
       max-width: 100%;
       border: 1px solid #ddd;
       border-radius: 8px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -68,26 +69,34 @@
         alert('Please enter a valid Facebook comment link.');
         return;
       }
+
       const encodedUrl = encodeURIComponent(fbUrl);
-      const apiKey = 'T3BEZ0J-HRCM506-H5BY1KB-2P2HYT6'; // Replace this with your ScreenshotAPI.net API key
+      const apiKey = 'B0Q2BB3-SS54CH2-MT9CKND-FD8WDNB';
       const apiUrl = `https://api.screenshotapi.net/screenshot?token=${apiKey}&url=${encodedUrl}&output=image&file_type=png&full_page=false&viewport=1280x800`;
 
-      const img = document.createElement('img');
-      img.src = apiUrl;
-      img.alt = 'Screenshot';
-
       const previewDiv = document.getElementById('screenshot-preview');
-      previewDiv.innerHTML = '';
-      previewDiv.appendChild(img);
+      previewDiv.innerHTML = 'Loading...';
 
-      // Create download link
-      const link = document.createElement('a');
-      link.href = apiUrl;
-      link.download = 'facebook-comment.png';
-      link.textContent = 'Download Screenshot';
-      link.style.display = 'block';
-      link.style.marginTop = '10px';
-      previewDiv.appendChild(link);
+      try {
+        const img = document.createElement('img');
+        img.src = apiUrl;
+        img.alt = 'Screenshot';
+        img.onload = () => {
+          previewDiv.innerHTML = '';
+          previewDiv.appendChild(img);
+
+          const link = document.createElement('a');
+          link.href = apiUrl;
+          link.download = 'facebook-comment.png';
+          link.textContent = '⬇️ Download Screenshot';
+          link.style.display = 'inline-block';
+          link.style.marginTop = '10px';
+          link.style.color = '#1877f2';
+          previewDiv.appendChild(link);
+        };
+      } catch (err) {
+        previewDiv.innerHTML = '❌ Failed to load screenshot. Make sure the comment is public.';
+      }
     }
   </script>
 </body>
